@@ -22,7 +22,7 @@ from predictor import Predictor, UnsupportedLevel, load_simulator
 def newer_frame(predictor, frame, queued):
     if (queued[0].session, queued[0].tick) < (frame[0].session, frame[0].tick):
         return frame
-    if predictor is not None and not predictor.rejected:
+    if predictor is not None and (not predictor.rejected or predictor.session != frame[0].session):
         known = predictor.tick if predictor.session == queued[0].session else 0
         if queued[0].tick - known > queued[3]:
             # Validate/replay retained history before the newer window discards it.

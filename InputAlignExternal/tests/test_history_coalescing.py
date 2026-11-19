@@ -26,3 +26,16 @@ class HistoryTests(unittest.TestCase):
         state=state_tuple(p.sim.view(p.state))
         with self.assertRaisesRegex(ValueError,'historial'):
             p.synchronize(Header(FRAME,1,2,1,65),state,0,64)
+
+    def test_new_attempt_can_recover_after_rejected_session(self):
+        p=Predictor(load_simulator('kA2,0;'))
+        p.session=1;p.rejected=True
+        state=p.sim.initial_state();latest=None
+        for tick in range(1,66):
+            state=p.sim.step(state,False)
+            frame=(Header(FRAME,1,2,2,tick),state_tuple(p.sim.view(state)),0,min(tick,64))
+            latest=frame if latest is None else newer_frame(p,latest,frame)
+        p.synchronize(*latest)
+        self.assertEqual(p.session,2)
+        self.assertEqual(p.tick,65)
+        self.assertFalse(p.rejected)
