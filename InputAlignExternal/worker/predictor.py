@@ -112,7 +112,7 @@ class Predictor:
         self.rejected = False
         version = getattr(sim._lib, 'iax_adapter_version', None)
         if version is None or version() != 4:
-            raise RuntimeError('Falta adaptador v3: compila worker/branch.cpp con CMake o copia completa InputAlignWorker')
+            raise RuntimeError('Falta adaptador v4: compila worker/branch.cpp con CMake o copia completa InputAlignWorker')
         self.native = getattr(sim._lib, 'iax_predict_v2', None)
         self.clear_preview = getattr(sim._lib, 'iax_clear_preview_notes', None)
         if self.native is None or self.clear_preview is None:

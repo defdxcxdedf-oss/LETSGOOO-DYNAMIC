@@ -98,6 +98,7 @@ void Runtime::refresh() {
 }
 void Runtime::reset() {
     flushRecording();
+    if (!m_macroLoaded) loadMacro();
     ++session; m_physics.reset(); held = false; m_pendingEvent.reset();
     gate.reset(session); applying = false; inCommands = false; fullTick = false; m_predictionReady = false;
     clicks = corrected = noclipDeaths = 0; clickTimes.clear(); m_recentPresses.clear();
@@ -245,10 +246,12 @@ void Runtime::applied(bool down) { if (held != down) { held = down; gate.changed
 void Runtime::loadMacro() {
     m_reference.clear();
     for (auto& ticks : m_referenceTicks) ticks.clear();
-    if (m_macroPath.empty()) return;
+    m_macroLoaded = m_macroPath.empty();
+    if (m_macroLoaded) return;
     try {
         if (std::filesystem::file_size(m_macroPath) > 16 * 1024 * 1024) throw std::runtime_error("macro >16 MiB");
         std::ifstream file(m_macroPath, std::ios::binary);
+        if (!file) throw std::runtime_error("macro unavailable");
         std::string text((std::istreambuf_iterator<char>(file)), {});
         auto add = [this](int64_t tick, bool down) {
             if (tick >= 0 && tick <= 1000000000 && m_reference.size() < 100000) m_reference.push_back({std::uint64_t(tick), down});
@@ -279,6 +282,7 @@ void Runtime::loadMacro() {
         } else throw std::runtime_error("formato no compatible");
         std::stable_sort(m_reference.begin(), m_reference.end(), [](auto const& a, auto const& b) { return a.tick < b.tick; });
         for (auto const& input : m_reference) m_referenceTicks[unsigned(input.down)].push_back(input.tick);
+        m_macroLoaded = true;
     } catch (std::exception const& error) {
         m_reference.clear(); for (auto& ticks : m_referenceTicks) ticks.clear();
         log::warn("Input Align External macro: {}", error.what());
@@ -288,7 +292,7 @@ void Runtime::flushRecording() {
     {
         std::lock_guard lock(m_writeMutex);
         // Retry retained failures on the next attempt/save, without spinning on a full disk.
-        while (!m_failedRecordings.empty() && m_recordings.size() < 16) {
+        while (!m_failedRecordings.empty() && m_recordings.size() < (m_events.empty() ? 16u : 15u)) {
             m_recordings.push_back(std::move(m_failedRecordings.front()));
             m_failedRecordings.pop_front();
         }

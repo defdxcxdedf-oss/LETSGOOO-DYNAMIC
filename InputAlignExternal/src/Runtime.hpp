@@ -44,6 +44,7 @@ class Runtime {
     std::vector<MacroInput> m_reference;
     std::array<std::vector<std::uint64_t>, 2> m_referenceTicks;
     std::filesystem::path m_macroPath;
+    bool m_macroLoaded = false;
     std::vector<Event> m_events;
     std::optional<std::size_t> m_pendingEvent;
     std::uint64_t m_recordSerial = 0;

@@ -34,7 +34,7 @@ $runtime = Join-Path $BuildDirectory "python-3.12.10-embed-amd64.zip"
 $runtimeHash = "4ACBED6DD1C744B0376E3B1CF57CE906F9DC9E95E68824584C8099A63025A3C3"
 if ((Test-Path $runtime) -and (Get-FileHash $runtime -Algorithm SHA256).Hash -ne $runtimeHash) { Remove-Item $runtime }
 if (-not (Test-Path $runtime)) {
-    Invoke-WebRequest "https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip" -OutFile "$runtime.partial"
+    Invoke-WebRequest "https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip" -OutFile "$runtime.partial" -TimeoutSec 120
     if ((Get-FileHash "$runtime.partial" -Algorithm SHA256).Hash -ne $runtimeHash) { throw "Untrusted runtime download" }
     Move-Item "$runtime.partial" $runtime -Force
 }

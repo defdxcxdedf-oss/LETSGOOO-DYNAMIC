@@ -45,3 +45,19 @@ class PackagingSelectionTests(unittest.TestCase):
             runtime=root/'runtime.zip';runtime.write_bytes(b'untrusted')
             with self.assertRaisesRegex(ValueError,'Untrusted'):
                 module.package(root,runtime,root/'result.zip')
+
+    def test_worker_cannot_replace_runtime(self):
+        import json
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); project=root/'project'; build=root/'build'
+            vendor=project/'worker/vendor';vendor.mkdir(parents=True);build.mkdir()
+            (vendor/'UPSTREAM.json').write_text(json.dumps({'files':[]}))
+            for name in ('README.md','LICENSE'):(project/name).write_bytes(b'fixture')
+            (project/'worker/python.exe').write_bytes(b'bad overlay')
+            (build/'mod.geode').write_bytes(b'mod');(build/'gdsim.dll').write_bytes(b'dll')
+            runtime=root/'runtime.zip'
+            with zipfile.ZipFile(runtime,'w') as z:
+                for name in ('python.exe','python312.dll','python312.zip'):z.writestr(name,b'fixture')
+            with patch.object(module,'ROOT',project), patch.object(module,'PYTHON_RUNTIME_SHA256',hashlib.sha256(runtime.read_bytes()).hexdigest()):
+                with self.assertRaisesRegex(ValueError,'collides'):
+                    module.package(build,runtime,root/'result.zip')

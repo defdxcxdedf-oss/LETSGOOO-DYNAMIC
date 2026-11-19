@@ -19,6 +19,17 @@ from protocol import Header, HELLO, decode_frame, status
 from predictor import Predictor, UnsupportedLevel, load_simulator
 
 
+def newer_frame(predictor, frame, queued):
+    if (queued[0].session, queued[0].tick) < (frame[0].session, frame[0].tick):
+        return frame
+    if predictor is not None and not predictor.rejected:
+        known = predictor.tick if predictor.session == queued[0].session else 0
+        if queued[0].tick - known > queued[3]:
+            # Validate/replay retained history before the newer window discards it.
+            predictor.synchronize(*frame[:4])
+    return queued
+
+
 def serve(directory: Path, *, stop=None):
     config = json.loads((directory / 'bridge.json').read_text(encoding='utf-8'))
     if config.get('version') != 1 or not 1 <= config['port'] <= 65535:
@@ -56,20 +67,6 @@ def serve(directory: Path, *, stop=None):
                 frame = decode_frame(packet, token)
             except (ValueError, OverflowError):
                 continue
-            # Coalesce queued telemetry before spending CPU on a forecast. History reconstructs skipped ticks.
-            sock.setblocking(False)
-            try:
-                for _ in range(64):
-                    try:
-                        queued = decode_frame(sock.recv(2048), token)
-                        if (queued[0].session, queued[0].tick) >= (frame[0].session, frame[0].tick):
-                            frame = queued
-                    except (ValueError, OverflowError):
-                        continue
-                    except BlockingIOError:
-                        break
-            finally:
-                sock.settimeout(.05)
             header = frame[0]
             if header.session != last_session:
                 last_session = header.session
@@ -82,6 +79,20 @@ def serve(directory: Path, *, stop=None):
                     except (ValueError, OSError, RuntimeError, OverflowError, AttributeError) as error:
                         failure = str(error)
                 print('Intento', header.session, failure or 'simulador preparado', flush=True)
+            # Coalesce queued telemetry before spending CPU on a forecast. History reconstructs skipped ticks.
+            sock.setblocking(False)
+            try:
+                for _ in range(64):
+                    try:
+                        queued = decode_frame(sock.recv(2048), token)
+                        frame = newer_frame(predictor, frame, queued)
+                    except (ValueError, OverflowError):
+                        continue
+                    except BlockingIOError:
+                        break
+            finally:
+                sock.settimeout(.05)
+            header = frame[0]
             result = None
             message = failure
             query_error = False

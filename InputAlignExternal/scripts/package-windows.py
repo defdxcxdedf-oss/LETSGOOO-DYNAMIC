@@ -63,7 +63,10 @@ def package(build: Path, runtime: Path, output: Path, *, native: Path | None = N
     for path in sorted((ROOT / 'worker').rglob('*')):
         if (not path.is_file() or '__pycache__' in path.parts or 'build' in path.parts
                 or path.suffix in {'.so', '.dll', '.pyc'}): continue
-        members['InputAlignWorker/' + path.relative_to(ROOT / 'worker').as_posix()] = path.read_bytes()
+        name = 'InputAlignWorker/' + path.relative_to(ROOT / 'worker').as_posix()
+        if name.casefold() in {key.casefold() for key in members}:
+            raise ValueError('Worker file collides with staged runtime: ' + name)
+        members[name] = path.read_bytes()
     members['InputAlignWorker/Iniciar-consola.cmd'] = (
         '@echo off\r\nsetlocal\r\n'
         'if "%~1"=="" (\r\n echo Usa Abrir CMD en el boton IAX del menu de pausa.\r\n pause\r\n exit /b 2\r\n)\r\n'

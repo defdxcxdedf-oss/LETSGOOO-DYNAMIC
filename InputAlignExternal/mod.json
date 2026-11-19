@@ -22,7 +22,7 @@
       "default": true
     },
     "cbf-sync": {
-      "name": "CBF sync",
+      "name": "CBF sync (reservado)",
       "description": "Ajuste reservado por compatibilidad con InputAlign. La sincronizacion sub-tick aun no esta implementada: con CBF detectado o pasos parciales se conserva siempre la entrada original, incluso con este ajuste desactivado.",
       "type": "bool",
       "default": true
