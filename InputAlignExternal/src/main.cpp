@@ -154,9 +154,9 @@ class $modify(IAXPause, PauseLayer) {
 
 // Shift+Tab toggles correction only while a level runtime is active.
 class $modify(IAXKeyboard, CCKeyboardDispatcher) {
-    struct Fields { iax::Shortcut shortcut; };
     bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat, double timestamp) {
-        auto result = m_fields->shortcut.handle(key == KEY_Tab, down, repeat,
+        static iax::Shortcut shortcut;
+        auto result = shortcut.handle(key == KEY_Tab, down, repeat,
                                                iax::active && getShiftKeyPressed());
         if (result.toggle && iax::active) {
             auto mod = Mod::get();
