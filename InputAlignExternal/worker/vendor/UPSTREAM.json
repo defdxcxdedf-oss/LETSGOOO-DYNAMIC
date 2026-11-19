@@ -1,0 +1,82 @@
+{
+  "repository": "https://github.com/kholkink/gd-levelgen",
+  "commit": "9496709eadd22fc3a130f89043169c17da4d5b9c",
+  "license": "MIT",
+  "files": [
+    "gdgen/__init__.py",
+    "gdgen/objects.py",
+    "gdgen/levelstring.py",
+    "gdgen/sim/__init__.py",
+    "gdgen/sim/physics.py",
+    "gdgen/sim/collide.py",
+    "gdgen/sim/level.py",
+    "gdgen/sim/triggers.py",
+    "gdgen/sim/search.py",
+    "gdgen/sim/fast.py",
+    "gdgen/sim/core/gdsim.cpp",
+    "gdgen/data/objects_2.2081.json"
+  ],
+  "modifications": [
+    {
+      "file": "gdgen/sim/collide.py",
+      "upstreamSha256": "923713f9b4431526dbe761735c7a816b3ff16b0ae4eb8c3ee7d9448fee68bb76",
+      "sha256": "e7183e535d0b787fc383aa8b435a99cfa07e65629250a61c44a02ba65a807285"
+    },
+    {
+      "file": "gdgen/sim/level.py",
+      "upstreamSha256": "c6dd5a2fb13b0dfd38897436c1901cf9dcf305dc9f1c1162ba8642855a93baec",
+      "sha256": "604a436faf5597efa2ae36ecc049c9381b7b7769433de7e5b2b9f29519f17a9d"
+    },
+    {
+      "file": "gdgen/sim/triggers.py",
+      "upstreamSha256": "6d715bf38d28b58918372bfed7b933de6011deec169ece674a98591c2662ef39",
+      "sha256": "5023111fd3a67986b6f73b66cc7e645713784c428f8bd836249e1b0f23eaf398"
+    },
+    {
+      "file": "gdgen/sim/fast.py",
+      "upstreamSha256": "bc915fcb513f11e5c8598b2eba7d2ea594ebdb2c954a387e834fa2c43099ee9e",
+      "sha256": "51e37045d80bbe7f399464c3a4a485da7f91452bc0883174ecffa9c0420aa783"
+    },
+    {
+      "file": "gdgen/sim/core/gdsim.cpp",
+      "upstreamSha256": "662927aca189aee93228cec8843b3177796321c2f3a229286a19162e9794e47b",
+      "sha256": "2b4233b115765c04fba5e7c9e8333696c4ed5c1372bb409877d2e72d20fdb62a"
+    },
+    {
+      "file": "gdgen/levelstring.py",
+      "upstreamSha256": "47934cfcc58dcc49c152767db5c56f0f1336d3b520eec445adb490166d9b2dae",
+      "sha256": "1d9dcd28fbd877eda195241d2ed5a1c0ae31004ad84475fad15eb61d6281057b"
+    }
+  ],
+  "upstreamFileSha256": {
+    "gdgen/__init__.py": "39fa61d983cabb6ad1e58280a0ecd3e2922f1548a258f5e4c02d4e155f22ca71",
+    "gdgen/objects.py": "1bbd812c20e734fa5fc95bd449a7df2c1c0cdc549b3c7d08808ed1b2127ae84b",
+    "gdgen/levelstring.py": "47934cfcc58dcc49c152767db5c56f0f1336d3b520eec445adb490166d9b2dae",
+    "gdgen/sim/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gdgen/sim/physics.py": "91e77906aebe2e308a84d3e3ea8de7468a66731b7b377786a06ce1fde2ff3714",
+    "gdgen/sim/collide.py": "923713f9b4431526dbe761735c7a816b3ff16b0ae4eb8c3ee7d9448fee68bb76",
+    "gdgen/sim/level.py": "c6dd5a2fb13b0dfd38897436c1901cf9dcf305dc9f1c1162ba8642855a93baec",
+    "gdgen/sim/triggers.py": "6d715bf38d28b58918372bfed7b933de6011deec169ece674a98591c2662ef39",
+    "gdgen/sim/search.py": "e3698bb925ebafca23e3f9a8dccb7687042988876884f3e1e96aa7a580591ef5",
+    "gdgen/sim/fast.py": "bc915fcb513f11e5c8598b2eba7d2ea594ebdb2c954a387e834fa2c43099ee9e",
+    "gdgen/sim/core/gdsim.cpp": "662927aca189aee93228cec8843b3177796321c2f3a229286a19162e9794e47b",
+    "gdgen/data/objects_2.2081.json": "a5b62af3f3bee2523f8b7704429abd2142d6c5075eca92e474ce85a4b37198d3"
+  },
+  "fileSha256": {
+    "gdgen/__init__.py": "39fa61d983cabb6ad1e58280a0ecd3e2922f1548a258f5e4c02d4e155f22ca71",
+    "gdgen/objects.py": "1bbd812c20e734fa5fc95bd449a7df2c1c0cdc549b3c7d08808ed1b2127ae84b",
+    "gdgen/levelstring.py": "1d9dcd28fbd877eda195241d2ed5a1c0ae31004ad84475fad15eb61d6281057b",
+    "gdgen/sim/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gdgen/sim/physics.py": "91e77906aebe2e308a84d3e3ea8de7468a66731b7b377786a06ce1fde2ff3714",
+    "gdgen/sim/collide.py": "e7183e535d0b787fc383aa8b435a99cfa07e65629250a61c44a02ba65a807285",
+    "gdgen/sim/level.py": "604a436faf5597efa2ae36ecc049c9381b7b7769433de7e5b2b9f29519f17a9d",
+    "gdgen/sim/triggers.py": "5023111fd3a67986b6f73b66cc7e645713784c428f8bd836249e1b0f23eaf398",
+    "gdgen/sim/search.py": "e3698bb925ebafca23e3f9a8dccb7687042988876884f3e1e96aa7a580591ef5",
+    "gdgen/sim/fast.py": "51e37045d80bbe7f399464c3a4a485da7f91452bc0883174ecffa9c0420aa783",
+    "gdgen/sim/core/gdsim.cpp": "2b4233b115765c04fba5e7c9e8333696c4ed5c1372bb409877d2e72d20fdb62a",
+    "gdgen/data/objects_2.2081.json": "a5b62af3f3bee2523f8b7704429abd2142d6c5075eca92e474ce85a4b37198d3"
+  },
+  "localSupportFiles": {
+    "../WindowsMath.hpp": "d64bfa06bd6fcb2a38cdff5ceab21430dca80159cd8c4e31e2b5e54f2aa0981d"
+  }
+}

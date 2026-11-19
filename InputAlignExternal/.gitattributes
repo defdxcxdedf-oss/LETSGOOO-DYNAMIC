@@ -1,0 +1,2 @@
+worker/vendor/** linguist-vendored=true
+worker/vendor/gdgen/data/objects_2.2081.json -diff
